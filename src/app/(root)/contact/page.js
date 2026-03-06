@@ -10,6 +10,7 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     message: "",
   });
 
@@ -53,7 +54,7 @@ const Contact = () => {
       }
 
       setShowPopup(true);
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", message: "" });
       setTimeout(() => setShowPopup(false), 5000);
     } catch (error) {
       const isNetworkError = error instanceof TypeError;
@@ -152,6 +153,25 @@ const Contact = () => {
                     placeholder="john@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
+                    className="w-full rounded-[10px] bg-slate-950 border border-slate-700 text-slate-100 px-4 py-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-900/40 transition-all placeholder:text-slate-500"
+                  />
+                </div>
+
+                <div className="group">
+                  <label className="block text-[10px] uppercase tracking-[0.2em] text-slate-400 mb-2 group-focus-within:text-blue-400 transition-colors">
+                    Phone Number
+                  </label>
+                  <input
+                    required
+                    type="tel"
+                    inputMode="numeric"
+                    pattern="[0-9]{8,15}"
+                    placeholder="+8801XXXXXXXXX"
+                    value={formData.phone}
+                    onChange={(e) => {
+                      const digitsOnly = e.target.value.replace(/\D/g, "");
+                      setFormData((prev) => ({ ...prev, phone: digitsOnly }));
+                    }}
                     className="w-full rounded-[10px] bg-slate-950 border border-slate-700 text-slate-100 px-4 py-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-900/40 transition-all placeholder:text-slate-500"
                   />
                 </div>

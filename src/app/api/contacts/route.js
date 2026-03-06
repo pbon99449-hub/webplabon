@@ -55,13 +55,18 @@ export async function POST(request) {
     return Response.json({ error: "name, email, message are required." }, { status: 400 });
   }
 
+  const phone = typeof payload?.phone === "string" ? payload.phone.trim() : "";
+  const upstreamPayload = phone
+    ? { ...payload, message: `Phone: ${phone}\n\n${payload.message}` }
+    : payload;
+
   const backendUrl = `${getBackendBaseUrl()}/api/contacts`;
 
   try {
     const upstream = await fetch(backendUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(upstreamPayload),
       cache: "no-store",
     });
 
