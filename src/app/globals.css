@@ -1,0 +1,88 @@
+﻿@import "tailwindcss";
+
+:root {
+  --bg: #020617;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --line: #334155;
+  --blue: #2563eb;
+  --yellow: #facc15;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Keep scrollbar visible and aligned with light theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b1220;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+@keyframes wave-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scaleX(1);
+  }
+  50% {
+    transform: translate3d(-3%, -2%, 0) scaleX(1.04);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scaleX(1);
+  }
+}
+
+@keyframes wave-float {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, 2%, 0) scale(1.02);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.animate-wave-drift {
+  animation: wave-drift 18s ease-in-out infinite;
+}
+
+.animate-wave-float {
+  animation: wave-float 22s ease-in-out infinite;
+}
+
+@keyframes aurora-shift {
+  0% {
+    transform: translate3d(-1.5%, 0, 0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(1.5%, -1%, 0) scale(1.04);
+    opacity: 0.72;
+  }
+  100% {
+    transform: translate3d(-1.5%, 0, 0) scale(1);
+    opacity: 0.5;
+  }
+}
+
+.animate-aurora-shift {
+  animation: aurora-shift 24s ease-in-out infinite;
+}
