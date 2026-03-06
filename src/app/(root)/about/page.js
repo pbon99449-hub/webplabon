@@ -59,11 +59,11 @@ const About = () => {
 
             <div className="grid sm:grid-cols-3 gap-4">
               <div className="rounded-2xl border border-slate-700 p-5 bg-slate-900/65 backdrop-blur-sm">
-                <p className="text-2xl font-black">40+</p>
+                <p className="text-2xl font-black">10+</p>
                 <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400 mt-1">Delivered Screens</p>
               </div>
               <div className="rounded-2xl border border-slate-700 p-5 bg-slate-900/65 backdrop-blur-sm">
-                <p className="text-2xl font-black">25+</p>
+                <p className="text-2xl font-black">5+</p>
                 <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400 mt-1">Happy Clients</p>
               </div>
               <div className="rounded-2xl border border-slate-700 p-5 bg-slate-900/65 backdrop-blur-sm">
