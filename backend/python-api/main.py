@@ -11,7 +11,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import DateTime, Integer, String, Text, create_engine, desc
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
-from twilio.base.exceptions import TwilioException
 from twilio.rest import Client
 
 load_dotenv()
@@ -160,7 +159,8 @@ def send_contact_sms(name: str, email: str, message: str) -> bool:
             to=SMS_TO_NUMBER,
         )
         return True
-    except TwilioException:
+    except Exception:
+        # Keep contact submission successful even when Twilio/network/proxy errors occur.
         logger.exception("Twilio SMS notification failed.")
         return False
 

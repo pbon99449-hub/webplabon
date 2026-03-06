@@ -35,6 +35,9 @@ yarn-error.log*
 .env*
 backend/python-api/.venv/
 backend/python-api/portfolio.db
+backend/python-api/portfolio.db-journal
+__pycache__/
+*.pyc
 
 # vercel
 .vercel

@@ -5,8 +5,22 @@ const QUEUE_DIR = path.join(process.cwd(), ".tmp");
 const QUEUE_FILE = path.join(QUEUE_DIR, "contact-queue.ndjson");
 
 function getBackendBaseUrl() {
-  const raw = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
-  return raw.replace(/\/$/, "");
+  const raw = (process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000").trim();
+  const normalized = raw.replace(/\/$/, "");
+
+  // Accept BACKEND_URL values like:
+  // https://api.example.com
+  // https://api.example.com/api
+  // https://api.example.com/api/contacts
+  if (/\/api\/contacts$/i.test(normalized)) return normalized.replace(/\/api\/contacts$/i, "");
+  if (/\/api$/i.test(normalized)) return normalized.replace(/\/api$/i, "");
+  return normalized;
+}
+
+function isQueueEnabled() {
+  if (process.env.CONTACT_QUEUE_ENABLED === "true") return true;
+  if (process.env.CONTACT_QUEUE_ENABLED === "false") return false;
+  return process.env.NODE_ENV !== "production";
 }
 
 function getErrorMessage(data, fallback) {
@@ -14,6 +28,13 @@ function getErrorMessage(data, fallback) {
   if (Array.isArray(data?.detail) && data.detail[0]?.msg) return data.detail[0].msg;
   if (typeof data?.error === "string" && data.error.trim()) return data.error;
   return fallback;
+}
+
+function getShortTextMessage(text) {
+  if (typeof text !== "string") return "";
+  const trimmed = text.trim();
+  if (!trimmed) return "";
+  return trimmed.length > 180 ? `${trimmed.slice(0, 180)}...` : trimmed;
 }
 
 async function queueContact(payload) {
@@ -53,19 +74,44 @@ export async function POST(request) {
     }
 
     if (!upstream.ok) {
-      const message = getErrorMessage(data, `Upstream failed (${upstream.status})`);
+      const shortText = getShortTextMessage(text);
+      const fallback =
+        upstream.status === 404
+          ? `Upstream failed (404) at ${backendUrl}. Check BACKEND_URL / NEXT_PUBLIC_BACKEND_URL.`
+          : shortText
+            ? `Upstream failed (${upstream.status}) at ${backendUrl}: ${shortText}`
+            : `Upstream failed (${upstream.status}) at ${backendUrl}. Check backend logs.`;
+      const message = getErrorMessage(data, fallback);
       return Response.json({ error: message }, { status: upstream.status });
     }
 
     return Response.json(data || { success: true }, { status: upstream.status });
   } catch {
-    await queueContact(payload);
+    if (isQueueEnabled()) {
+      try {
+        await queueContact(payload);
+        return Response.json(
+          {
+            queued: true,
+            message: "Backend unavailable. Message was saved locally and can be retried later.",
+          },
+          { status: 202 }
+        );
+      } catch {
+        return Response.json(
+          {
+            error: "Contact backend is unavailable and local queue could not be written.",
+          },
+          { status: 503 }
+        );
+      }
+    }
+
     return Response.json(
       {
-        queued: true,
-        message: "Backend unavailable. Message was saved locally and can be retried later.",
+        error: "Contact backend is unavailable. Set BACKEND_URL (or NEXT_PUBLIC_BACKEND_URL) to a running API.",
       },
-      { status: 202 }
+      { status: 503 }
     );
   }
 }
