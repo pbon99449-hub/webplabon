@@ -1,12 +1,17 @@
 ﻿@import "tailwindcss";
 
 :root {
-  --bg: #020617;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --line: #334155;
-  --blue: #2563eb;
-  --yellow: #facc15;
+  --bg: #030712;
+  --text: #e5edf8;
+  --muted: #99a7bd;
+  --line: #273448;
+  --blue: #3b82f6;
+  --yellow: #f3c963;
+  --gold-soft: #e8b74d;
+  --gold-bright: #f6d58a;
+  --gold-deep: #b8892e;
+  --surface: rgba(12, 19, 33, 0.72);
+  --surface-strong: rgba(9, 15, 26, 0.88);
 }
 
 html {
@@ -14,8 +19,18 @@ html {
 }
 
 body {
-  background: var(--bg);
+  background:
+    radial-gradient(65% 55% at 15% 10%, rgba(59, 130, 246, 0.16), transparent 70%),
+    radial-gradient(40% 35% at 85% 12%, rgba(243, 201, 99, 0.14), transparent 78%),
+    linear-gradient(180deg, #040a16 0%, #030712 100%);
   color: var(--text);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.01em;
+}
+
+::selection {
+  background: rgba(59, 130, 246, 0.35);
+  color: #f8fafc;
 }
 
 /* Keep scrollbar visible and aligned with light theme */
@@ -85,4 +100,124 @@ body {
 
 .animate-aurora-shift {
   animation: aurora-shift 24s ease-in-out infinite;
+}
+
+.premium-grid {
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.09) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+.luxury-title {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+  letter-spacing: 0.02em;
+}
+
+.luxury-surface {
+  background: var(--surface);
+  border: 1px solid rgba(100, 116, 139, 0.36);
+  box-shadow:
+    0 20px 50px rgba(2, 6, 23, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  transition:
+    border-color 300ms ease,
+    box-shadow 350ms ease,
+    transform 350ms ease,
+    background 350ms ease;
+}
+
+.luxury-surface:hover {
+  border-color: rgba(232, 183, 77, 0.55);
+  box-shadow:
+    0 26px 56px rgba(2, 6, 23, 0.45),
+    0 0 0 1px rgba(246, 213, 138, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform: translateY(-4px);
+}
+
+.luxury-panel {
+  background: linear-gradient(165deg, rgba(13, 23, 40, 0.95), rgba(10, 17, 30, 0.88));
+  border: 1px solid rgba(95, 114, 138, 0.42);
+}
+
+.gold-shine {
+  background-image: linear-gradient(90deg, #f9e4b1 0%, var(--gold-soft) 38%, var(--gold-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.luxury-interactive {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 400ms ease,
+    color 400ms ease,
+    background-color 400ms ease;
+}
+
+.luxury-interactive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.35) 50%, transparent 80%);
+  transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.luxury-interactive:hover::before {
+  transform: translateX(120%);
+}
+
+.luxury-interactive:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(246, 213, 138, 0.8);
+  box-shadow: 
+    0 20px 40px rgba(2, 6, 23, 0.6), 
+    0 0 30px rgba(232, 183, 77, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.luxury-interactive:active {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 
+    0 10px 25px rgba(2, 6, 23, 0.5), 
+    0 0 20px rgba(232, 183, 77, 0.15);
+}
+
+/* Shine animation keyframes */
+@keyframes luxury-shine {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-15deg);
+  }
+}
+
+.luxury-interactive .shine-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: skewX(-20deg) translateX(-150%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.luxury-interactive:hover .shine-effect {
+  animation: luxury-shine 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }

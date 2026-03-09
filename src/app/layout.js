@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import ParticleBackground from "@/component/ParticleBackground";
 
@@ -10,6 +10,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const playfairDisplay = Playfair_Display({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
 });
 
 export const metadata = {
@@ -26,7 +32,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased relative overflow-x-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} antialiased relative overflow-x-hidden`}
       >
         <ParticleBackground />
         <div className="relative z-10">{children}</div>

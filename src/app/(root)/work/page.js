@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import React, { useEffect } from "react";
 import Image from "next/image";
 
@@ -33,6 +33,12 @@ const projects = [
   },
 ];
 
+const highlights = [
+  { label: "Case Studies", value: "12+" },
+  { label: "Industries", value: "6" },
+  { label: "Avg. Performance", value: "95+" },
+];
+
 const Work = () => {
   useEffect(() => {
     const reveals = document.querySelectorAll(".reveal");
@@ -58,15 +64,24 @@ const Work = () => {
 
       <div className="max-w-7xl mx-auto mb-10 reveal">
         <h2 className="text-blue-600 font-bold tracking-[0.24em] sm:tracking-[0.4em] uppercase text-[11px] sm:text-sm mb-4">Portfolio</h2>
-        <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-slate-100 italic uppercase tracking-tighter leading-[0.95]">
+        <h1 className="luxury-title text-4xl sm:text-5xl md:text-7xl font-black text-slate-100 italic uppercase tracking-tighter leading-[0.95]">
           Selected <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-yellow-500">Works</span>
         </h1>
         <div className="h-[3px] w-36 bg-gradient-to-r from-blue-600 to-yellow-500 mt-6 rounded-full"></div>
       </div>
 
+      <div className="max-w-7xl mx-auto grid sm:grid-cols-3 gap-4 mb-8 reveal">
+        {highlights.map((item) => (
+          <div key={item.label} className="luxury-surface rounded-2xl p-5">
+            <p className="text-3xl font-black text-slate-100">{item.value}</p>
+            <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400 mt-2">{item.label}</p>
+          </div>
+        ))}
+      </div>
+
       <div className="max-w-7xl mx-auto flex flex-wrap gap-3 mb-8 reveal">
         {["All", "UI/UX", "Web Apps", "Branding", "E-commerce"].map((tag, idx) => (
-          <span key={tag} className={`text-[11px] uppercase tracking-[0.2em] px-4 py-2 rounded-full border ${idx === 0 ? "bg-blue-600 text-white border-blue-600" : "border-slate-700 text-slate-300 bg-slate-900/55"}`}>
+          <span key={tag} className={`luxury-interactive text-[11px] uppercase tracking-[0.2em] px-4 py-2 rounded-full border ${idx === 0 ? "bg-amber-300 text-slate-950 border-amber-300" : "border-slate-700 text-slate-300 bg-slate-900/55 hover:border-amber-300 hover:text-amber-100"}`}>
             {tag}
           </span>
         ))}
@@ -75,9 +90,9 @@ const Work = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
         {projects.map((project) => (
           <div key={project.id} className="group relative cursor-pointer reveal">
-            <div className="rounded-2xl relative overflow-hidden bg-slate-900/60 backdrop-blur-[2px] aspect-[16/10] border border-slate-700 shadow-sm">
-              <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/35 transition-all duration-500 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                <span className="text-white font-black uppercase tracking-widest text-xs border-2 border-yellow-300 px-5 py-2 rounded-md">View Case Study</span>
+            <div className="luxury-surface rounded-2xl relative overflow-hidden aspect-[16/10] shadow-sm">
+              <div className="absolute inset-0 bg-amber-300/0 group-hover:bg-amber-300/22 transition-all duration-500 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                <span className="text-white font-black uppercase tracking-widest text-xs border-2 border-amber-300 px-5 py-2 rounded-md">View Case Study</span>
               </div>
 
               <Image src={project.image} alt={project.title} fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" sizes="(max-width: 768px) 100vw, 50vw" />
@@ -85,20 +100,37 @@ const Work = () => {
 
             <div className="mt-5 flex justify-between items-start">
               <div>
-                <h3 className="text-2xl font-black text-slate-100 uppercase tracking-tighter group-hover:text-blue-400 transition-colors duration-300">{project.title}</h3>
+                <h3 className="text-2xl font-black text-slate-100 uppercase tracking-tighter group-hover:text-amber-100 transition-colors duration-300">{project.title}</h3>
                 <p className="text-slate-400 text-xs uppercase tracking-widest mt-2">{project.category}</p>
               </div>
-              <div className="text-blue-600 font-black text-2xl group-hover:translate-x-2 transition-transform">→</div>
+              <div className="text-blue-600 font-black text-2xl group-hover:translate-x-2 transition-transform">{"->"}</div>
             </div>
           </div>
         ))}
       </div>
 
+      <div className="max-w-7xl mx-auto mt-14 grid md:grid-cols-3 gap-4 reveal">
+        <div className="luxury-surface rounded-2xl p-6 md:col-span-2">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-blue-400">Client Feedback</p>
+          <p className="text-xl md:text-2xl italic font-medium leading-relaxed mt-3 text-slate-200">
+            The final product looked premium, loaded fast, and converted much better than our previous website.
+          </p>
+          <p className="text-slate-400 text-sm mt-4 uppercase tracking-[0.18em]">Founder, D2C Brand</p>
+        </div>
+        <div className="luxury-panel rounded-2xl p-6">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-blue-100">Need Similar Results?</p>
+          <p className="text-2xl font-black mt-3">Let us build your next launch page.</p>
+          <a href="/contact" className="luxury-interactive inline-block mt-6 rounded-[10px] border border-yellow-400 bg-yellow-400 px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 hover:bg-amber-300 transition-colors">
+            Start Now
+          </a>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto mt-16 text-center border-t border-slate-700 pt-12 reveal">
         <h3 className="text-slate-400 uppercase tracking-[0.2em] text-sm mb-6">Have a project in mind?</h3>
-        <button className="w-full sm:w-auto rounded-[12px] text-sm font-black text-slate-900 hover:text-white transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] uppercase tracking-[0.2em] px-8 sm:px-10 py-4 border border-yellow-400 bg-yellow-400 hover:bg-blue-600 hover:border-blue-600">
+        <a href="/contact" className="luxury-interactive inline-block w-full sm:w-auto rounded-[12px] text-sm font-black text-slate-900 hover:text-slate-950 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] uppercase tracking-[0.2em] px-8 sm:px-10 py-4 border border-yellow-400 bg-yellow-400 hover:bg-amber-300 hover:border-amber-300">
           Start a Project
-        </button>
+        </a>
       </div>
 
       <style jsx global>{`

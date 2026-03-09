@@ -26,13 +26,20 @@ const Navbar = () => {
         <ul className="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-semibold text-slate-300">
           {navItems.map((item) => (
             <li key={item} className="relative group">
-              <Link href={item === "Home" ? "/" : `/${item.toLowerCase()}`} className="hover:text-blue-400 transition-colors duration-300">
+              <Link href={item === "Home" ? "/" : `/${item.toLowerCase()}`} className="hover:text-amber-200 transition-colors duration-300">
                 {item}
               </Link>
-              <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-gradient-to-r from-blue-500 to-yellow-400 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-gradient-to-r from-amber-300 to-yellow-500 transition-all duration-300 group-hover:w-full"></span>
             </li>
           ))}
         </ul>
+
+        <a
+          href="/contact"
+          className="luxury-interactive hidden md:inline-flex rounded-full border border-amber-300/60 bg-amber-300/10 px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-amber-100 hover:bg-amber-300 hover:text-slate-950 transition-all duration-300"
+        >
+          Book Call
+        </a>
 
         <button className="md:hidden text-blue-400 z-[110] cursor-pointer" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
           <div className="w-7 h-5 flex flex-col justify-between items-end relative">
@@ -63,7 +70,7 @@ const Navbar = () => {
             >
               <Link
                 href={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-                className="block rounded-xl border border-slate-700/80 bg-slate-800/45 px-4 py-3 text-xl sm:text-2xl font-bold text-slate-100 hover:text-blue-400 hover:border-blue-500/60 hover:bg-slate-800/70 transition-all duration-300 italic"
+                className="luxury-interactive block rounded-xl border border-slate-700/80 bg-slate-800/45 px-4 py-3 text-xl sm:text-2xl font-bold text-slate-100 hover:text-amber-100 hover:border-amber-300/60 hover:bg-slate-800/70 transition-all duration-300 italic"
               >
                 {item}
               </Link>
@@ -73,8 +80,8 @@ const Navbar = () => {
 
         <div className={`mt-10 text-center transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>
           <p className="text-slate-400 text-xs uppercase tracking-widest mb-2">Get in touch</p>
-          <a href="mailto:hello@plabon.com" className="text-slate-100 text-base sm:text-lg font-bold hover:text-blue-400 transition-colors break-all">
-            hello@plabon.com
+          <a href="mailto:pbon99449@gmail.com" className="text-slate-100 text-base sm:text-lg font-bold hover:text-blue-400 transition-colors break-all">
+            pbon99449@gmail.com
           </a>
         </div>
         </div>
