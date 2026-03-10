@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import vvimg from "../../../public/image/vv.png";
 import ppimg from "../../../public/image/pp.png";
+import plabonimage from "../../../public/image/plabon.png";
 import HeroScene from "@/component/HeroScene";
 import ScrollReveal from "@/component/ScrollReveal";
 import TiltCard from "@/component/TiltCard";
@@ -30,155 +31,500 @@ const processSteps = [
 
 const partners = ["AURORA STUDIO", "NOVA FINTECH", "MOTION LAB", "LUXE HOMES", "VERTEX AGENCY"];
 
+const projects = [
+  {
+    id: 1,
+    title: "E-Commerce Revolution",
+    category: "Full Stack Development",
+    image: "/image/laptop.png",
+    link: "#",
+  },
+  {
+    id: 2,
+    title: "Premium Real Estate",
+    category: "UI/UX Design",
+    image: "/image/black.jpg",
+    link: "#",
+  },
+  {
+    id: 3,
+    title: "Crypto Dashboard",
+    category: "React App",
+    image: "/image/ccc.png",
+    link: "#",
+  },
+  {
+    id: 4,
+    title: "Fitness Tracker",
+    category: "Mobile App",
+    image: "/image/fff.png",
+    link: "#",
+  },
+];
+
+const skills = ["React.js", "JavaScript", "Tailwind CSS", "Next.js", "HTML5", "CSS3", "Framer Motion", "Figma"];
+
+const timeline = [
+  { year: "2023", title: "Freelance Journey Started", desc: "Started shipping responsive websites for local and global clients." },
+  { year: "2024", title: "Premium Brand Projects", desc: "Focused on strong visual systems and conversion-first landing experiences." },
+  { year: "2025", title: "Productized Workflow", desc: "Built a repeatable process for faster delivery and higher quality output." },
+];
+
+const trustBadges = ["Pixel-Perfect UI", "Conversion Focused", "Performance Optimized", "Responsive by Default"];
+
+const packages = [
+  {
+    name: "Landing Page",
+    time: "3-5 Days",
+    details: "High-converting, mobile-first premium landing page.",
+  },
+  {
+    name: "Business Website",
+    time: "1-2 Weeks",
+    details: "Multi-page website with polished branding and interactions.",
+  },
+  {
+    name: "Product UI",
+    time: "2-4 Weeks",
+    details: "Modern app dashboard and full UI system implementation.",
+  },
+];
+
 const Page = () => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/contacts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        let errorMessage = `Request failed (${response.status})`;
+        try {
+          const data = await response.json();
+          if (typeof data?.detail === "string" && data.detail.trim()) {
+            errorMessage = data.detail;
+          } else if (Array.isArray(data?.detail) && data.detail.length > 0) {
+            const firstIssue = data.detail[0];
+            if (firstIssue?.msg) {
+              errorMessage = firstIssue.msg;
+            }
+          } else if (typeof data?.error === "string" && data.error.trim()) {
+            errorMessage = data.error;
+          }
+        } catch {
+          // Response was not JSON; keep the HTTP status-based fallback message.
+        }
+        throw new Error(errorMessage);
+      }
+
+      setShowPopup(true);
+      setFormData({ name: "", email: "", phone: "", message: "" });
+      setTimeout(() => setShowPopup(false), 5000);
+    } catch (error) {
+      const isNetworkError = error instanceof TypeError;
+      const fallback = "Cannot send message right now. Please try again.";
+      setSubmitError(isNetworkError ? fallback : error.message || "Message send failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="bg-transparent text-slate-100 min-h-screen relative overflow-x-hidden">
       <div className="pointer-events-none absolute -top-28 -left-16 w-72 h-72 bg-blue-200/50 rounded-full blur-3xl"></div>
       <div className="pointer-events-none absolute top-[28%] -right-20 w-80 h-80 bg-yellow-200/60 rounded-full blur-3xl"></div>
 
-      <ScrollReveal delay={0.1}>
-        <motion.section 
-          className="max-w-7xl mx-auto pt-24 md:pt-28 pb-10 md:pb-12 px-4 sm:px-6 md:px-8"
-          initial={{ opacity: 0, y: 80 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-          <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 items-center">
-            <div>
-              <h2 className="text-blue-600 font-bold mb-4 tracking-[0.24em] sm:tracking-[0.4em] uppercase text-[11px] sm:text-sm">Available for Freelance</h2>
+      {/* HOME SECTION */}
+      <section id="home">
+        <ScrollReveal delay={0.1}>
+          <motion.section 
+            className="max-w-7xl mx-auto pt-24 md:pt-28 pb-10 md:pb-12 px-4 sm:px-6 md:px-8"
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 items-center">
+              <div>
+                <h2 className="text-blue-600 font-bold mb-4 tracking-[0.24em] sm:tracking-[0.4em] uppercase text-[11px] sm:text-sm">Available for Freelance</h2>
 
-              <h1 className="luxury-title inline-block text-4xl sm:text-5xl md:text-7xl xl:text-8xl font-black leading-[1.02] italic tracking-tight pr-3 md:pr-6 pb-2">
-                CRAFTING
-                <br />
-                <span className="inline-block pr-2 md:pr-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-slate-100 to-yellow-400">DIGITAL ART</span>
-              </h1>
+                <h1 className="luxury-title inline-block text-4xl sm:text-5xl md:text-7xl xl:text-8xl font-black leading-[1.02] italic tracking-tight pr-3 md:pr-6 pb-2">
+                  CRAFTING
+                  <br />
+                  <span className="inline-block pr-2 md:pr-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-slate-100 to-yellow-400">DIGITAL ART</span>
+                </h1>
 
-              <p className="mt-8 text-slate-300 max-w-xl text-lg leading-relaxed">
-                I design immersive websites with performance-first code, bold visual direction, and modern interaction patterns tailored for premium brands.
-              </p>
+                <p className="mt-8 text-slate-300 max-w-xl text-lg leading-relaxed">
+                  I design immersive websites with performance-first code, bold visual direction, and modern interaction patterns tailored for premium brands.
+                </p>
 
-              <div className="mt-10 flex flex-wrap gap-4">
-                <a href="/contact" className="luxury-interactive w-full sm:w-auto rounded-[12px] text-center relative group overflow-hidden bg-yellow-400 text-slate-900 px-8 sm:px-10 py-4 font-black uppercase tracking-[0.2em] text-xs border border-yellow-400 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03]">
-                  <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:text-white">Start Project</span>
-                  <div className="absolute inset-0 bg-blue-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"></div>
-                </a>
-                <a href="/work" className="luxury-interactive w-full sm:w-auto text-center rounded-[12px] px-8 sm:px-10 py-4 font-black uppercase tracking-[0.2em] text-xs border border-slate-600 text-slate-200 hover:border-amber-300 hover:text-amber-100 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
-                  View Work
-                </a>
+                <div className="mt-10 flex flex-wrap gap-4">
+                  <a href="#contact" className="luxury-interactive w-full sm:w-auto rounded-[12px] text-center relative group overflow-hidden bg-yellow-400 text-slate-900 px-8 sm:px-10 py-4 font-black uppercase tracking-[0.2em] text-xs border border-yellow-400 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03]">
+                    <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:text-white">Start Project</span>
+                    <div className="absolute inset-0 bg-blue-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"></div>
+                  </a>
+                  <a href="#work" className="luxury-interactive w-full sm:w-auto text-center rounded-[12px] px-8 sm:px-10 py-4 font-black uppercase tracking-[0.2em] text-xs border border-slate-600 text-slate-200 hover:border-amber-300 hover:text-amber-100 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
+                    View Work
+                  </a>
+                </div>
+
+                <div className="mt-8 flex flex-wrap gap-3 text-[11px] uppercase tracking-[0.18em] font-bold text-slate-400">
+                  <span className="rounded-full border border-slate-700 bg-slate-900/65 px-4 py-2">Fast Delivery</span>
+                  <span className="rounded-full border border-slate-700 bg-slate-900/65 px-4 py-2">Mobile First</span>
+                  <span className="rounded-full border border-slate-700 bg-slate-900/65 px-4 py-2">SEO Ready</span>
+                </div>
               </div>
 
-              <div className="mt-8 flex flex-wrap gap-3 text-[11px] uppercase tracking-[0.18em] font-bold text-slate-400">
-                <span className="rounded-full border border-slate-700 bg-slate-900/65 px-4 py-2">Fast Delivery</span>
-                <span className="rounded-full border border-slate-700 bg-slate-900/65 px-4 py-2">Mobile First</span>
-                <span className="rounded-full border border-slate-700 bg-slate-900/65 px-4 py-2">SEO Ready</span>
+              <div className="space-y-4">
+                <HeroScene />
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {metrics.map((item) => (
+                    <TiltCard key={item.label} className="luxury-golden rounded-2xl p-5 cursor-pointer">
+                      {item.value === "3.2 Weeks" ? (
+                        <p className="font-black text-slate-100 leading-none whitespace-nowrap text-[1.3rem] sm:text-[1.45rem] md:text-[1.6rem]">
+                          3.2 <span className="text-[0.72em] font-extrabold">Weeks</span>
+                        </p>
+                      ) : (
+                        <p className="font-black text-slate-100 leading-none whitespace-nowrap text-[1.65rem] sm:text-[1.75rem] md:text-[1.9rem]">{item.value}</p>
+                      )}
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400 mt-1">{item.label}</p>
+                    </TiltCard>
+                  ))}
+                </div>
               </div>
             </div>
+          </motion.section>
+        </ScrollReveal>
 
-            <div className="space-y-4">
-              <HeroScene />
-<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {metrics.map((item) => (
-                  <TiltCard key={item.label} className="luxury-golden rounded-2xl p-5 cursor-pointer">
-                    {item.value === "3.2 Weeks" ? (
-                      <p className="font-black text-slate-100 leading-none whitespace-nowrap text-[1.3rem] sm:text-[1.45rem] md:text-[1.6rem]">
-                        3.2 <span className="text-[0.72em] font-extrabold">Weeks</span>
-                      </p>
-                    ) : (
-                      <p className="font-black text-slate-100 leading-none whitespace-nowrap text-[1.65rem] sm:text-[1.75rem] md:text-[1.9rem]">{item.value}</p>
-                    )}
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400 mt-1">{item.label}</p>
-                  </TiltCard>
+        <ScrollReveal delay={0.2}>
+          <motion.section 
+            className="max-w-7xl mx-auto pb-10 md:pb-14 px-4 sm:px-6 md:px-8 reveal"
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <div className="luxury-panel rounded-2xl p-5 sm:p-7 overflow-hidden">
+              <p className="text-[10px] uppercase tracking-[0.24em] text-slate-400 mb-4">Trusted by teams building ambitious products</p>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                {partners.map((name) => (
+                  <div key={name} className="rounded-xl border border-slate-700 bg-slate-950/70 px-4 py-3 text-center text-[11px] font-bold tracking-[0.12em] text-slate-300">
+                    {name}
+                  </div>
                 ))}
               </div>
             </div>
-          </div>
-        </motion.section>
-      </ScrollReveal>
+          </motion.section>
+        </ScrollReveal>
 
-      <ScrollReveal delay={0.2}>
-        <motion.section 
-          className="max-w-7xl mx-auto pb-10 md:pb-14 px-4 sm:px-6 md:px-8 reveal"
-          initial={{ opacity: 0, y: 80 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-          <div className="luxury-panel rounded-2xl p-5 sm:p-7 overflow-hidden">
-            <p className="text-[10px] uppercase tracking-[0.24em] text-slate-400 mb-4">Trusted by teams building ambitious products</p>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-              {partners.map((name) => (
-                <div key={name} className="rounded-xl border border-slate-700 bg-slate-950/70 px-4 py-3 text-center text-[11px] font-bold tracking-[0.12em] text-slate-300">
-                  {name}
-                </div>
+        <ScrollReveal delay={0.3}>
+          <motion.section
+            className="max-w-7xl mx-auto pb-8 md:pb-12 px-4 sm:px-6 md:px-8"
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <div className="grid md:grid-cols-3 gap-4">
+              {valuePoints.map((item) => (
+                <TiltCard key={item.title} className="luxury-glow rounded-2xl p-6 cursor-pointer">
+                  <h3 className="text-lg font-black tracking-tight">{item.title}</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed mt-3">{item.desc}</p>
+                </TiltCard>
+              ))}
+            </div>
+          </motion.section>
+        </ScrollReveal>
+      </section>
+
+      {/* WORK SECTION */}
+      <section id="work">
+        <ScrollReveal delay={0.4}>
+          <motion.section 
+            className="max-w-7xl mx-auto py-12 md:py-14 px-4 sm:px-6 md:px-8"
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <div className="flex justify-between items-end mb-12 border-b border-slate-700 pb-6">
+              <div>
+                <h3 className="luxury-title text-3xl sm:text-4xl md:text-5xl font-black uppercase italic tracking-tighter">
+                  Selected <span className="gold-shine">Work</span>
+                </h3>
+                <div className="h-1.5 w-24 bg-gradient-to-r from-blue-600 to-yellow-500 mt-4"></div>
+              </div>
+              <p className="text-slate-400 hidden md:block font-mono tracking-widest uppercase">02 / 2026</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-10">
+              {[{ image: vvimg, title: "Luxury Real Estate App", tag: "React / UI Design", desc: "Modern UI for high-end properties." }, { image: ppimg, title: "Fashion Brand Store", tag: "E-commerce Store", desc: "A premium product browsing experience." }].map((project) => (
+                <TiltCard key={project.title} className="group cursor-pointer">
+                  <div className="rounded-2xl relative overflow-hidden aspect-video bg-slate-900/55 border border-slate-700 group-hover:border-blue-400 transition-all duration-500 shadow-sm luxury-image-zoom">
+                    <div className="absolute inset-0 bg-slate-950/10 group-hover:bg-blue-600/20 transition-all duration-500 z-10"></div>
+                    <Image src={project.image} alt={project.title} className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700" />
+                    <div className="absolute bottom-5 left-5 z-20 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                      <span className="bg-yellow-400 text-slate-900 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] rounded-md shadow-xl">{project.tag}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center mt-6">
+                    <div>
+                      <h4 className="text-2xl font-black uppercase tracking-tighter group-hover:text-blue-600 transition-colors duration-300">{project.title}</h4>
+                      <p className="text-slate-400 text-sm mt-2 uppercase tracking-widest">{project.desc}</p>
+                    </div>
+                    <span className="text-blue-600 text-3xl group-hover:translate-x-3 transition-transform duration-300">{"->"}</span>
+                  </div>
+                </TiltCard>
+              ))}
+            </div>
+          </motion.section>
+        </ScrollReveal>
+
+        {/* Work Page Projects */}
+        <ScrollReveal delay={0.45}>
+          <motion.section 
+            className="max-w-7xl mx-auto pb-14 px-4 sm:px-6 md:px-8"
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <div className="grid sm:grid-cols-3 gap-4 mb-8">
+              {[{ label: "Case Studies", value: "12+" }, { label: "Industries", value: "6" }, { label: "Avg. Performance", value: "95+" }].map((item) => (
+                <TiltCard key={item.label} className="luxury-golden rounded-2xl p-5 cursor-pointer">
+                  <p className="text-3xl font-black text-slate-100">{item.value}</p>
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400 mt-2">{item.label}</p>
+                </TiltCard>
+              ))}
+            </div>
+          </motion.section>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.5}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {projects.map((project) => (
+                <TiltCard 
+                  key={project.id} 
+                  className="group relative cursor-pointer"
+                >
+                  <div className="luxury-surface rounded-2xl relative overflow-hidden aspect-[16/10] shadow-sm">
+                    <div className="absolute inset-0 bg-amber-300/0 group-hover:bg-amber-300/22 transition-all duration-500 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <span className="text-white font-black uppercase tracking-widest text-xs border-2 border-amber-300 px-5 py-2 rounded-md">View Case Study</span>
+                    </div>
+
+                    <Image src={project.image} alt={project.title} fill className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700" sizes="(max-width: 768px) 100vw, 50vw" />
+                  </div>
+
+                  <div className="mt-5 flex justify-between items-start">
+                    <div>
+                      <h3 className="text-2xl font-black text-slate-100 uppercase tracking-tighter group-hover:text-amber-100 transition-colors duration-300">{project.title}</h3>
+                      <p className="text-slate-400 text-xs uppercase tracking-widest mt-2">{project.category}</p>
+                    </div>
+                    <div className="text-blue-600 font-black text-2xl group-hover:translate-x-2 transition-transform">{"->"}</div>
+                  </div>
+                </TiltCard>
               ))}
             </div>
           </div>
-        </motion.section>
-      </ScrollReveal>
+        </ScrollReveal>
 
-      <ScrollReveal delay={0.3}>
-        <motion.section
-          className="max-w-7xl mx-auto pb-8 md:pb-12 px-4 sm:px-6 md:px-8"
-          initial={{ opacity: 0, y: 80 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-<div className="grid md:grid-cols-3 gap-4">
-            {valuePoints.map((item) => (
-              <TiltCard key={item.title} className="luxury-glow rounded-2xl p-6 cursor-pointer">
-                <h3 className="text-lg font-black tracking-tight">{item.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed mt-3">{item.desc}</p>
-              </TiltCard>
-            ))}
-          </div>
-        </motion.section>
-      </ScrollReveal>
-
-      <ScrollReveal delay={0.4}>
-        <motion.section 
-          className="max-w-7xl mx-auto py-12 md:py-14 px-4 sm:px-6 md:px-8"
-          initial={{ opacity: 0, y: 80 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-          <div className="flex justify-between items-end mb-12 border-b border-slate-700 pb-6">
-            <div>
-              <h3 className="luxury-title text-3xl sm:text-4xl md:text-5xl font-black uppercase italic tracking-tighter">
-                Selected <span className="gold-shine">Work</span>
-              </h3>
-              <div className="h-1.5 w-24 bg-gradient-to-r from-blue-600 to-yellow-500 mt-4"></div>
+        <ScrollReveal delay={0.55}>
+          <motion.section 
+            className="max-w-7xl mx-auto mt-14 grid md:grid-cols-3 gap-4 px-4 sm:px-6 md:px-8"
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <div className="luxury-surface rounded-2xl p-6 md:col-span-2">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-blue-400">Client Feedback</p>
+              <p className="text-xl md:text-2xl italic font-medium leading-relaxed mt-3 text-slate-200">
+                The final product looked premium, loaded fast, and converted much better than our previous website.
+              </p>
+              <p className="text-slate-400 text-sm mt-4 uppercase tracking-[0.18em]">Founder, D2C Brand</p>
             </div>
-            <p className="text-slate-400 hidden md:block font-mono tracking-widest uppercase">02 / 2026</p>
-          </div>
+            <div className="luxury-panel rounded-2xl p-6">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-blue-100">Need Similar Results?</p>
+              <p className="text-2xl font-black mt-3">Let us build your next launch page.</p>
+              <a href="#contact" className="luxury-interactive inline-block mt-6 rounded-[10px] border border-yellow-400 bg-yellow-400 px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 hover:bg-amber-300 transition-colors">
+                Start Now
+              </a>
+            </div>
+          </motion.section>
+        </ScrollReveal>
 
-<div className="grid md:grid-cols-2 gap-10">
-            {[{ image: vvimg, title: "Luxury Real Estate App", tag: "React / UI Design", desc: "Modern UI for high-end properties." }, { image: ppimg, title: "Fashion Brand Store", tag: "E-commerce Store", desc: "A premium product browsing experience." }].map((project) => (
-              <TiltCard key={project.title} className="group cursor-pointer">
-                <div className="rounded-2xl relative overflow-hidden aspect-video bg-slate-900/55 border border-slate-700 group-hover:border-blue-400 transition-all duration-500 shadow-sm luxury-image-zoom">
-                  <div className="absolute inset-0 bg-slate-950/10 group-hover:bg-blue-600/20 transition-all duration-500 z-10"></div>
-                  <Image src={project.image} alt={project.title} className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700" />
-                  <div className="absolute bottom-5 left-5 z-20 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                    <span className="bg-yellow-400 text-slate-900 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] rounded-md shadow-xl">{project.tag}</span>
+        <ScrollReveal delay={0.6}>
+          <motion.section 
+            className="max-w-7xl mx-auto mt-16 text-center border-t border-slate-700 pt-12 px-4 sm:px-6 md:px-8"
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-slate-400 uppercase tracking-[0.2em] text-sm mb-6">Have a project in mind?</h3>
+            <a href="#contact" className="luxury-interactive inline-block w-full sm:w-auto rounded-[12px] text-sm font-black text-slate-900 hover:text-slate-950 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] uppercase tracking-[0.2em] px-8 sm:px-10 py-4 border border-yellow-400 bg-yellow-400 hover:bg-amber-300 hover:border-amber-300">
+              Start a Project
+            </a>
+          </motion.section>
+        </ScrollReveal>
+      </section>
+
+      {/* ABOUT SECTION */}
+      <section id="about">
+        <div className="bg-transparent min-h-screen text-slate-100 pt-28 pb-14 px-4 sm:px-6 md:px-8">
+          <div className="max-w-7xl mx-auto">
+            <ScrollReveal delay={0.1}>
+              <motion.div 
+                className="mb-12"
+                initial={{ opacity: 0, y: 80 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-blue-600 font-bold tracking-[0.24em] sm:tracking-[0.4em] uppercase text-[11px] sm:text-sm mb-4 italic">01. Who I Am</h2>
+                <h1 className="luxury-title text-4xl sm:text-5xl md:text-8xl font-black uppercase tracking-tighter italic leading-[0.95]">
+                  ABOUT <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-yellow-500">PLABON.</span>
+                </h1>
+                <div className="h-[3px] w-44 bg-gradient-to-r from-blue-600 to-yellow-500 mt-6 rounded-full"></div>
+              </motion.div>
+            </ScrollReveal>
+
+            <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-10 items-start">
+              <ScrollReveal delay={0.2}>
+                <motion.div 
+                  className="relative group"
+                  initial={{ opacity: 0, y: 80 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.9, ease: "easeOut" }}
+                  viewport={{ once: true }}
+                >
+                  <div className="absolute -inset-3 rounded-2xl border-2 border-blue-900/60 group-hover:border-blue-500 transition-colors duration-500"></div>
+                  <div className="relative rounded-2xl bg-slate-900/65 aspect-[4/5] overflow-hidden border border-slate-700">
+                    <Image src={plabonimage} alt="Plabon" className="object-cover w-full h-full" />
                   </div>
-                </div>
 
-                <div className="flex justify-between items-center mt-6">
-                  <div>
-                    <h4 className="text-2xl font-black uppercase tracking-tighter group-hover:text-blue-600 transition-colors duration-300">{project.title}</h4>
-                    <p className="text-slate-400 text-sm mt-2 uppercase tracking-widest">{project.desc}</p>
+                  <div className="absolute -bottom-4 -right-4 bg-yellow-400 text-slate-900 rounded-xl px-5 py-4 hidden md:block shadow-lg">
+                    <span className="text-3xl font-black block">02+</span>
+                    <span className="text-[10px] uppercase tracking-widest font-bold">Years of Experience</span>
                   </div>
-                  <span className="text-blue-600 text-3xl group-hover:translate-x-3 transition-transform duration-300">{"->"}</span>
-                </div>
-              </TiltCard>
-            ))}
-          </div>
-        </motion.section>
-      </ScrollReveal>
+                </motion.div>
+              </ScrollReveal>
 
-      <ScrollReveal delay={0.5}>
+              <ScrollReveal delay={0.3}>
+                <motion.div 
+                  className="space-y-8"
+                  initial={{ opacity: 0, y: 80 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.9, ease: "easeOut" }}
+                  viewport={{ once: true }}
+                >
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black italic uppercase leading-snug">
+                    I build <span className="text-blue-600">high-performance interfaces</span> with bold visual direction and product-focused execution.
+                  </h3>
+
+                  <p className="text-slate-300 leading-relaxed text-base sm:text-lg">
+                    Every project I ship is built around clarity, speed, and conversion goals. I blend UI strategy, strong front-end architecture, and polished motion to create digital products that feel premium.
+                  </p>
+
+                  <div className="grid sm:grid-cols-3 gap-4">
+                    <div className="luxury-surface rounded-2xl p-5">
+                      <p className="text-2xl font-black">40+</p>
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400 mt-1">Delivered Screens</p>
+                    </div>
+                    <div className="luxury-surface rounded-2xl p-5">
+                      <p className="text-2xl font-black">12+</p>
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400 mt-1">Happy Clients</p>
+                    </div>
+                    <div className="luxury-surface rounded-2xl p-5">
+                      <p className="text-2xl font-black">99%</p>
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400 mt-1">On-time Delivery</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-3">
+                    {trustBadges.map((badge) => (
+                      <span key={badge} className="rounded-full border border-slate-700 bg-slate-900/70 px-4 py-2 text-[10px] uppercase tracking-[0.18em] font-bold text-slate-300">
+                        {badge}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="pt-4">
+                    <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-blue-600 mb-5 italic">My Expertise</h4>
+                    <div className="flex flex-wrap gap-3">
+                      {skills.map((skill) => (
+                        <span key={skill} className="luxury-interactive luxury-shimmer rounded-[10px] px-5 py-2 border border-slate-700 hover:border-amber-300 hover:text-amber-100 transition-all duration-300 text-xs font-bold uppercase tracking-widest bg-slate-900/70 text-slate-200">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              </ScrollReveal>
+            </div>
+
+            <ScrollReveal delay={0.4}>
+              <motion.div 
+                className="mt-14 grid md:grid-cols-3 gap-4"
+                initial={{ opacity: 0, y: 80 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
+                viewport={{ once: true }}
+              >
+                {timeline.map((item) => (
+                  <TiltCard key={item.year} className="luxury-glow rounded-2xl p-6 cursor-pointer">
+                    <p className="text-blue-400 font-black text-xl">{item.year}</p>
+                    <h4 className="mt-2 text-lg font-black uppercase tracking-tight">{item.title}</h4>
+                    <p className="mt-2 text-sm text-slate-400 leading-relaxed">{item.desc}</p>
+                  </TiltCard>
+                ))}
+              </motion.div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.5}>
+              <motion.div 
+                className="mt-14 p-6 sm:p-8 md:p-12 rounded-2xl luxury-panel relative overflow-hidden"
+                initial={{ opacity: 0, y: 80 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
+                viewport={{ once: true }}
+              >
+                <div className="absolute -top-10 -right-10 w-36 h-36 bg-blue-200/60 rounded-full blur-3xl"></div>
+                <div className="relative z-10 text-center max-w-3xl mx-auto">
+                  <h4 className="text-blue-600 text-4xl sm:text-5xl md:text-6xl font-black opacity-10 absolute -top-8 left-0 w-full select-none">VISION</h4>
+                  <p className="text-lg sm:text-xl md:text-2xl italic font-medium leading-relaxed">
+                    Design is not just about what people see. It is about what they feel and how effectively they move through your product.
+                  </p>
+                  <a href="#contact" className="luxury-interactive inline-block mt-8 rounded-[12px] border border-yellow-400 bg-yellow-400 px-8 py-4 text-[11px] font-black uppercase tracking-[0.2em] text-slate-900 hover:bg-amber-300 hover:border-amber-300 hover:text-slate-950 transition-all duration-300">
+                    Work With Me
+                  </a>
+                </div>
+              </motion.div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* PROCESS SECTION */}
+      <ScrollReveal delay={0.65}>
         <motion.section 
           className="max-w-7xl mx-auto py-12 md:py-14 px-4 sm:px-6 md:px-8"
           initial={{ opacity: 0, y: 80 }}
@@ -196,7 +542,7 @@ const Page = () => {
             <p className="text-slate-400 text-sm max-w-md">From idea to launch, each phase is optimized for visual quality, clarity, and measurable results.</p>
           </div>
 
-<div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             {processSteps.map((step) => (
               <TiltCard key={step.id} className="luxury-pulse-ring rounded-2xl p-6 flex gap-5 cursor-pointer">
                 <span className="text-2xl font-black text-blue-400">{step.id}</span>
@@ -210,7 +556,235 @@ const Page = () => {
         </motion.section>
       </ScrollReveal>
 
-      <ScrollReveal delay={0.6}>
+      {/* CONTACT SECTION */}
+      <section id="contact">
+        <div className="bg-transparent min-h-screen text-slate-100 pt-28 pb-14 px-4 sm:px-6 md:px-20 overflow-x-hidden relative">
+          <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 bg-blue-200/50 rounded-full blur-3xl"></div>
+          <div className="pointer-events-none absolute top-1/3 -right-24 w-80 h-80 bg-yellow-200/60 rounded-full blur-3xl"></div>
+
+          <div className="max-w-7xl mx-auto relative z-10">
+            <ScrollReveal delay={0.1}>
+              <motion.div 
+                className="mb-12 md:mb-14"
+                initial={{ opacity: 0, y: 80 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-blue-400 font-bold tracking-[0.24em] sm:tracking-[0.4em] uppercase text-[11px] sm:text-sm mb-4 italic">03. Get In Touch</h2>
+                <h1 className="luxury-title text-4xl sm:text-5xl md:text-8xl font-black uppercase tracking-tighter italic leading-[0.95]">
+                  LET US <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-slate-100 to-yellow-400">TALK.</span>
+                </h1>
+                <div className="h-[3px] w-44 bg-gradient-to-r from-blue-400 to-yellow-400 mt-6 rounded-full"></div>
+              </motion.div>
+            </ScrollReveal>
+
+            <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-start">
+              <ScrollReveal delay={0.2}>
+                <motion.div 
+                  className="space-y-8"
+                  initial={{ opacity: 0, x: -80 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.9, ease: "easeOut" }}
+                  viewport={{ once: true }}
+                >
+                  <p className="text-slate-300 text-lg leading-relaxed max-w-xl">
+                    Share your idea, timeline, and project goals. I design and build fast, clean, modern digital experiences with strong visual identity.
+                  </p>
+
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="luxury-surface rounded-2xl p-6 flex flex-col">
+                      <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full border border-blue-400/40 bg-blue-500/15 text-blue-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16v12H4z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="m4 8 8 6 8-6" />
+                        </svg>
+                      </div>
+                      <a href="mailto:pbon99449@gmail.com" className="font-bold text-slate-100 hover:text-amber-100 break-all transition-colors">
+                        pbon99449@gmail.com
+                      </a>
+                    </div>
+
+                    <div className="luxury-surface rounded-2xl p-6 flex flex-col">
+                      <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full border border-blue-400/40 bg-blue-500/15 text-blue-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s-6-5.2-6-10a6 6 0 1 1 12 0c0 4.8-6 10-6 10Z" />
+                          <circle cx="12" cy="11" r="2.2" />
+                        </svg>
+                      </div>
+                      <p className="font-bold text-slate-200">Barishal, Bangladesh</p>
+                    </div>
+
+                    <div className="sm:col-span-2 luxury-surface rounded-2xl p-6 flex flex-col">
+                      <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full border border-blue-400/40 bg-blue-500/15 text-blue-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M22 16.9v2a2 2 0 0 1-2.2 2 19.7 19.7 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6 19.7 19.7 0 0 1-3.1-8.7A2 2 0 0 1 4 1h2a2 2 0 0 1 2 1.7c.1.8.3 1.6.6 2.4a2 2 0 0 1-.5 2.1L7 8.3a16 16 0 0 0 6.7 6.7l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.6.5 2.4.6A2 2 0 0 1 22 16.9Z" />
+                        </svg>
+                      </div>
+                      <a href="tel:+8801679796976" className="font-bold text-slate-100 hover:text-amber-100 transition-colors">
+                        01679796976
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="luxury-panel rounded-2xl text-white p-6 shadow-md">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-blue-100 mb-2">Response Time</p>
+                    <p className="text-2xl font-black">Within 24 Hours</p>
+                  </div>
+
+                  <ScrollReveal delay={0.3}>
+                    <motion.div 
+                      className="grid sm:grid-cols-3 gap-3"
+                      initial={{ opacity: 0, y: 80 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.9, ease: "easeOut" }}
+                      viewport={{ once: true }}
+                    >
+                      {packages.map((item) => (
+                        <TiltCard key={item.name} className="luxury-glow rounded-2xl p-4 cursor-pointer">
+                          <p className="text-[10px] uppercase tracking-[0.2em] text-blue-400">{item.time}</p>
+                          <p className="mt-2 text-sm font-black uppercase tracking-tight">{item.name}</p>
+                          <p className="mt-2 text-xs text-slate-400 leading-relaxed">{item.details}</p>
+                        </TiltCard>
+                      ))}
+                    </motion.div>
+                  </ScrollReveal>
+                </motion.div>
+              </ScrollReveal>
+
+              <ScrollReveal delay={0.3}>
+                <motion.div 
+                  className="rounded-2xl p-[1px] bg-gradient-to-br from-blue-500 via-slate-300 to-yellow-400"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.9, ease: "easeOut" }}
+                  viewport={{ once: true }}
+                >
+                  <div className="bg-slate-900/75 rounded-2xl p-5 sm:p-6 md:p-10 border border-slate-700">
+                    <form className="space-y-5" onSubmit={handleSubmit}>
+                      <div className="relative">
+                        <input
+                          required
+                          type="text"
+                          placeholder=" "
+                          value={formData.name}
+                          onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+                          className="peer w-full rounded-[10px] bg-slate-950 border border-sky-300/50 text-slate-100 px-4 pt-5 pb-3 focus:outline-none focus:border-sky-300 focus:ring-2 focus:ring-sky-400/30 transition-all"
+                        />
+                        <label className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 bg-transparent px-0 py-0 rounded-none text-[10px] uppercase tracking-[0.2em] text-slate-400 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-sky-100 peer-focus:scale-95 peer-focus:bg-blue-500 peer-focus:px-2 peer-focus:py-[3px] peer-focus:rounded-md peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:bg-transparent peer-placeholder-shown:px-0 peer-placeholder-shown:py-0 peer-placeholder-shown:rounded-none peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:-translate-y-1/2 peer-[:not(:placeholder-shown)]:scale-95 peer-[:not(:placeholder-shown)]:text-sky-100 peer-[:not(:placeholder-shown)]:bg-blue-500 peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:py-[3px] peer-[:not(:placeholder-shown)]:rounded-md origin-left">
+                          Your Name
+                        </label>
+                      </div>
+
+                      <div className="relative">
+                        <input
+                          required
+                          type="email"
+                          placeholder=" "
+                          value={formData.email}
+                          onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
+                          className="peer w-full rounded-[10px] bg-slate-950 border border-sky-300/50 text-slate-100 px-4 pt-5 pb-3 focus:outline-none focus:border-sky-300 focus:ring-2 focus:ring-sky-400/30 transition-all"
+                        />
+                        <label className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 bg-transparent px-0 py-0 rounded-none text-[10px] uppercase tracking-[0.2em] text-slate-400 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-sky-100 peer-focus:scale-95 peer-focus:bg-blue-500 peer-focus:px-2 peer-focus:py-[3px] peer-focus:rounded-md peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:bg-transparent peer-placeholder-shown:px-0 peer-placeholder-shown:py-0 peer-placeholder-shown:rounded-none peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:-translate-y-1/2 peer-[:not(:placeholder-shown)]:scale-95 peer-[:not(:placeholder-shown)]:text-sky-100 peer-[:not(:placeholder-shown)]:bg-blue-500 peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:py-[3px] peer-[:not(:placeholder-shown)]:rounded-md origin-left">
+                          Email Address
+                        </label>
+                      </div>
+
+                      <div className="relative">
+                        <input
+                          required
+                          type="tel"
+                          inputMode="numeric"
+                          pattern="[0-9]{8,15}"
+                          placeholder=" "
+                          value={formData.phone}
+                          onChange={(e) => {
+                            const digitsOnly = e.target.value.replace(/\D/g, "");
+                            setFormData((prev) => ({ ...prev, phone: digitsOnly }));
+                          }}
+                          className="peer w-full rounded-[10px] bg-slate-950 border border-sky-300/50 text-slate-100 px-4 pt-5 pb-3 focus:outline-none focus:border-sky-300 focus:ring-2 focus:ring-sky-400/30 transition-all"
+                        />
+                        <label className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 bg-transparent px-0 py-0 rounded-none text-[10px] uppercase tracking-[0.2em] text-slate-400 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-sky-100 peer-focus:scale-95 peer-focus:bg-blue-500 peer-focus:px-2 peer-focus:py-[3px] peer-focus:rounded-md peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:bg-transparent peer-placeholder-shown:px-0 peer-placeholder-shown:py-0 peer-placeholder-shown:rounded-none peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:-translate-y-1/2 peer-[:not(:placeholder-shown)]:scale-95 peer-[:not(:placeholder-shown)]:text-sky-100 peer-[:not(:placeholder-shown)]:bg-blue-500 peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:py-[3px] peer-[:not(:placeholder-shown)]:rounded-md origin-left">
+                          Phone Number
+                        </label>
+                      </div>
+
+                      <div className="relative">
+                        <textarea
+                          required
+                          rows="5"
+                          placeholder=" "
+                          value={formData.message}
+                          onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
+                          className="peer w-full rounded-[10px] bg-slate-950 border border-sky-300/50 text-slate-100 px-4 pt-6 pb-3 focus:outline-none focus:border-sky-300 focus:ring-2 focus:ring-sky-400/30 transition-all resize-none"
+                        ></textarea>
+                        <label className="pointer-events-none absolute left-3 top-5 -translate-y-1/2 bg-transparent px-0 py-0 rounded-none text-[10px] uppercase tracking-[0.2em] text-slate-400 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-sky-100 peer-focus:scale-95 peer-focus:bg-blue-500 peer-focus:px-2 peer-focus:py-[3px] peer-focus:rounded-md peer-placeholder-shown:top-5 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:bg-transparent peer-placeholder-shown:px-0 peer-placeholder-shown:py-0 peer-placeholder-shown:rounded-none peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:-translate-y-1/2 peer-[:not(:placeholder-shown)]:scale-95 peer-[:not(:placeholder-shown)]:text-sky-100 peer-[:not(:placeholder-shown)]:bg-blue-500 peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:py-[3px] peer-[:not(:placeholder-shown)]:rounded-md origin-left">
+                          Message
+                        </label>
+                      </div>
+
+                      {submitError && <p className="text-red-600 text-sm font-semibold">{submitError}</p>}
+
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="luxury-interactive rounded-[10px] w-full bg-yellow-400 hover:bg-amber-300 hover:text-slate-950 disabled:bg-slate-300 disabled:text-slate-600 disabled:cursor-not-allowed text-slate-900 font-black uppercase tracking-[0.2em] py-4 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] mt-2 group flex items-center justify-center gap-2"
+                      >
+                        {isSubmitting ? "Sending..." : "Send Message"}
+                        <span className="group-hover:translate-x-2 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">{"->"}</span>
+                      </button>
+                    </form>
+                  </div>
+                </motion.div>
+              </ScrollReveal>
+            </div>
+
+            <ScrollReveal delay={0.4}>
+              <motion.div 
+                className="mt-12 grid md:grid-cols-3 gap-4"
+                initial={{ opacity: 0, y: 80 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
+                viewport={{ once: true }}
+              >
+                {[
+                  { q: "How fast can you start?", a: "Usually within 24-48 hours after scope confirmation." },
+                  { q: "Do you support revisions?", a: "Yes, every project includes structured revision rounds." },
+                  { q: "Can you work with existing design?", a: "Yes, I can improve and scale your current design system." },
+                ].map((item) => (
+                  <div key={item.q} className="luxury-surface rounded-2xl p-6">
+                    <h3 className="text-sm font-black uppercase tracking-[0.12em] text-slate-100">{item.q}</h3>
+                    <p className="mt-3 text-sm text-slate-400 leading-relaxed">{item.a}</p>
+                  </div>
+                ))}
+              </motion.div>
+            </ScrollReveal>
+          </div>
+
+          {/* Contact Popup */}
+          {showPopup && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
+              <div className="absolute inset-0 bg-slate-900/45 backdrop-blur-sm" onClick={() => setShowPopup(false)}></div>
+
+              <div className="bg-slate-900 border border-blue-900/60 rounded-2xl p-6 sm:p-8 md:p-10 max-w-sm w-full relative z-10 text-center shadow-[0_16px_60px_rgba(37,99,235,0.2)]" data-aos="zoom-in" data-aos-duration="250">
+                <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_24px_rgba(37,99,235,0.5)]">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-black uppercase italic mb-2 text-slate-100">Success</h3>
+                <p className="text-slate-300 mb-7">Your message has been sent successfully. I will get back to you soon.</p>
+                <button onClick={() => setShowPopup(false)} className="luxury-interactive w-full rounded-[10px] bg-slate-100 text-slate-900 font-bold py-3 uppercase tracking-widest hover:bg-amber-300 hover:text-slate-900 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Footer CTA */}
+      <ScrollReveal delay={0.7}>
         <motion.section 
           className="max-w-7xl mx-auto py-16 md:py-20 px-4 sm:px-6 md:px-8 text-center relative"
           initial={{ opacity: 0, y: 80 }}
@@ -227,7 +801,7 @@ const Page = () => {
               pbon99449@gmail.com
             </a>
             <div className="mt-8">
-              <a href="/contact" className="luxury-interactive inline-block rounded-[12px] px-8 py-4 font-black uppercase tracking-[0.2em] text-xs border border-amber-300/60 text-amber-100 hover:bg-amber-300 hover:text-slate-950 transition-all duration-300">
+              <a href="#contact" className="luxury-interactive inline-block rounded-[12px] px-8 py-4 font-black uppercase tracking-[0.2em] text-xs border border-amber-300/60 text-amber-100 hover:bg-amber-300 hover:text-slate-950 transition-all duration-300">
                 Book Free Consultation
               </a>
             </div>
@@ -239,4 +813,3 @@ const Page = () => {
 };
 
 export default Page;
-

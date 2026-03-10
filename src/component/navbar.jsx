@@ -1,11 +1,25 @@
 "use client";
-import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const navItems = ["Home", "Work", "About", "Contact"];
+const navItems = [
+  { name: "Home", href: "#home" },
+  { name: "Work", href: "#work" },
+  { name: "About", href: "#about" },
+  { name: "Contact", href: "#contact" },
+];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    setIsOpen(false);
+    
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <nav
@@ -15,9 +29,9 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center py-5 px-4 sm:px-6 md:px-8">
         <div className="flex items-center gap-3 relative z-[110]">
-          <div className="text-slate-100 text-2xl md:text-3xl font-black tracking-tighter italic cursor-pointer">
+          <a href="#home" onClick={(e) => handleNavClick(e, "#home")} className="text-slate-100 text-2xl md:text-3xl font-black tracking-tighter italic cursor-pointer">
             PLABON<span className="text-blue-400">.</span>
-          </div>
+          </a>
           <span className="hidden md:inline-flex text-[10px] font-bold uppercase tracking-[0.18em] px-3 py-1 rounded-full bg-yellow-300 text-slate-900">
             Available
           </span>
@@ -25,17 +39,18 @@ const Navbar = () => {
 
 <ul className="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-semibold text-slate-300">
           {navItems.map((item) => (
-            <li key={item} className="relative group">
-              <Link href={item === "Home" ? "/" : `/${item.toLowerCase()}`} className="luxury-text-hover hover:text-amber-200 transition-colors duration-300">
-                {item}
-              </Link>
+            <li key={item.name} className="relative group">
+              <a href={item.href} onClick={(e) => handleNavClick(e, item.href)} className="luxury-text-hover hover:text-amber-200 transition-colors duration-300">
+                {item.name}
+              </a>
               <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-gradient-to-r from-amber-300 to-yellow-500 transition-all duration-300 group-hover:w-full"></span>
             </li>
           ))}
         </ul>
 
         <a
-          href="/contact"
+          href="#contact"
+          onClick={(e) => handleNavClick(e, "#contact")}
           className="luxury-interactive hidden md:inline-flex rounded-full border border-amber-300/60 bg-amber-300/10 px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-amber-100 hover:bg-amber-300 hover:text-slate-950 transition-all duration-300"
         >
           Book Call
@@ -63,17 +78,17 @@ const Navbar = () => {
         <ul className="flex flex-col space-y-3 mt-2 text-center">
           {navItems.map((item, index) => (
             <li
-              key={item}
+              key={item.name}
               className={`transform transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${isOpen ? "translate-x-0 opacity-100" : "-translate-x-8 opacity-0"}`}
               style={{ transitionDelay: `${index * 80}ms` }}
-              onClick={() => setIsOpen(false)}
             >
-              <Link
-                href={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+              <a
+                href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className="luxury-interactive block rounded-xl border border-slate-700/80 bg-slate-800/45 px-4 py-3 text-xl sm:text-2xl font-bold text-slate-100 hover:text-amber-100 hover:border-amber-300/60 hover:bg-slate-800/70 transition-all duration-300 italic"
               >
-                {item}
-              </Link>
+                {item.name}
+              </a>
             </li>
           ))}
         </ul>
