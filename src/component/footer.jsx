@@ -10,11 +10,11 @@ const Footer = () => {
           © {currentYear} <span className="text-slate-100 font-bold">Plabon</span> - All Rights Reserved.
         </div>
 
-        <div className="flex flex-wrap justify-start md:justify-center gap-x-6 gap-y-3 text-[11px] uppercase tracking-widest font-bold">
-          <a href="/work" className="luxury-interactive text-slate-400 hover:text-amber-100 transition-colors duration-300 italic">Works</a>
-          <a href="/about" className="luxury-interactive text-slate-400 hover:text-amber-100 transition-colors duration-300 italic">About</a>
-          <a href="/contact" className="luxury-interactive text-slate-400 hover:text-amber-100 transition-colors duration-300 italic">Contact</a>
-          <a href="mailto:pbon99449@gmail.com" className="luxury-interactive text-slate-400 hover:text-amber-100 transition-colors duration-300 italic">Email</a>
+<div className="flex flex-wrap justify-start md:justify-center gap-x-6 gap-y-3 text-[11px] uppercase tracking-widest font-bold">
+          <a href="/work" className="luxury-interactive luxury-underline text-slate-400 hover:text-amber-100 transition-colors duration-300 italic">Works</a>
+          <a href="/about" className="luxury-interactive luxury-underline text-slate-400 hover:text-amber-100 transition-colors duration-300 italic">About</a>
+          <a href="/contact" className="luxury-interactive luxury-underline text-slate-400 hover:text-amber-100 transition-colors duration-300 italic">Contact</a>
+          <a href="mailto:pbon99449@gmail.com" className="luxury-interactive luxury-underline text-slate-400 hover:text-amber-100 transition-colors duration-300 italic">Email</a>
         </div>
 
         <div className="text-slate-400 text-[10px] tracking-[0.16em] md:text-right uppercase">

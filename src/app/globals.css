@@ -221,3 +221,329 @@ body {
 .luxury-interactive:hover .shine-effect {
   animation: luxury-shine 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+/* ============================================
+   ENHANCED LUXURY HOVER EFFECTS
+   ============================================ */
+
+/* Golden Glow Pulse Effect */
+@keyframes golden-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(232, 183, 77, 0.3), 0 0 40px rgba(232, 183, 77, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(232, 183, 77, 0.5), 0 0 60px rgba(232, 183, 77, 0.2), 0 0 80px rgba(232, 183, 77, 0.1);
+  }
+}
+
+/* Animated Gradient Border */
+@keyframes gradient-rotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.luxury-gradient-border {
+  position: relative;
+}
+
+.luxury-gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(
+    90deg,
+    #3b82f6,
+    #f3c963,
+    #e8b74d,
+    #3b82f6
+  );
+  background-size: 300% 300%;
+  animation: gradient-rotate 4s ease infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.luxury-gradient-border:hover::before {
+  opacity: 1;
+}
+
+/* Enhanced Glow Effect */
+.luxury-glow {
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luxury-glow:hover {
+  box-shadow: 
+    0 0 40px rgba(232, 183, 77, 0.4),
+    0 0 80px rgba(232, 183, 77, 0.2),
+    0 20px 40px rgba(2, 6, 23, 0.5);
+  transform: translateY(-4px);
+}
+
+/* 3D Tilt Effect Base */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tilt-card:hover {
+  transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateZ(10px);
+}
+
+/* Shimmer Effect */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-15deg);
+  }
+}
+
+.luxury-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.luxury-shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.luxury-shimmer:hover::after {
+  animation: shimmer 0.8s ease;
+}
+
+/* Enhanced Interactive with Golden Glow */
+.luxury-golden {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luxury-golden::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(232, 183, 77, 0.1) 0%,
+    transparent 50%,
+    rgba(232, 183, 77, 0.1) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.luxury-golden:hover::before {
+  opacity: 1;
+}
+
+.luxury-golden:hover {
+  border-color: rgba(232, 183, 77, 0.6) !important;
+  box-shadow: 
+    0 20px 40px rgba(2, 6, 23, 0.5),
+    0 0 30px rgba(232, 183, 77, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-4px) scale(1.02);
+}
+
+/* Text Gradient Hover */
+.luxury-text-hover {
+  background: linear-gradient(90deg, #e2e8f0, #94a3b8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: all 0.4s ease;
+}
+
+.luxury-text-hover:hover {
+  background: linear-gradient(90deg, #f3c963, #e8b74d, #f3c963);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Scale and Glow Effect */
+.luxury-scale-glow {
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luxury-scale-glow:hover {
+  transform: scale(1.03) translateY(-4px);
+  box-shadow: 
+    0 25px 50px rgba(2, 6, 23, 0.4),
+    0 0 40px rgba(59, 130, 246, 0.3);
+}
+
+/* Border Glow Effect */
+.luxury-border-glow {
+  position: relative;
+}
+
+.luxury-border-glow::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #3b82f6, #f3c963, #3b82f6);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.4s ease;
+}
+
+.luxury-border-glow:hover::after {
+  opacity: 0.8;
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.luxury-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.luxury-float:hover {
+  animation: none;
+  transform: translateY(-4px);
+}
+
+/* Pulse Ring Effect */
+.luxury-pulse-ring {
+  position: relative;
+}
+
+.luxury-pulse-ring::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 2px solid rgba(232, 183, 77, 0.5);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.4s ease;
+}
+
+.luxury-pulse-ring:hover::before {
+  opacity: 1;
+  transform: scale(1);
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Enhanced Hover Underline */
+.luxury-underline {
+  position: relative;
+}
+
+.luxury-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #f3c963, #e8b74d);
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luxury-underline:hover::after {
+  width: 100%;
+}
+
+/* Image Hover Zoom */
+.luxury-image-zoom {
+  overflow: hidden;
+}
+
+.luxury-image-zoom img {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luxury-image-zoom:hover img {
+  transform: scale(1.1);
+}
+
+/* Button Ripple Effect */
+.luxury-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.luxury-ripple::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.luxury-ripple:hover::after {
+  width: 300%;
+  height: 300%;
+}
+
+/* Skew Hover Effect */
+.luxury-skew-hover {
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luxury-skew-hover:hover {
+  transform: skewX(-5deg);
+}
+
+/* Brightness Hover */
+.luxury-brightness {
+  transition: all 0.4s ease;
+}
+
+.luxury-brightness:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 30px rgba(243, 201, 99, 0.3);
+}

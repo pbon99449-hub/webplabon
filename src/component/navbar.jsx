@@ -23,10 +23,10 @@ const Navbar = () => {
           </span>
         </div>
 
-        <ul className="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-semibold text-slate-300">
+<ul className="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-semibold text-slate-300">
           {navItems.map((item) => (
             <li key={item} className="relative group">
-              <Link href={item === "Home" ? "/" : `/${item.toLowerCase()}`} className="hover:text-amber-200 transition-colors duration-300">
+              <Link href={item === "Home" ? "/" : `/${item.toLowerCase()}`} className="luxury-text-hover hover:text-amber-200 transition-colors duration-300">
                 {item}
               </Link>
               <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-gradient-to-r from-amber-300 to-yellow-500 transition-all duration-300 group-hover:w-full"></span>

@@ -2,6 +2,7 @@ import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import ParticleBackground from "@/component/ParticleBackground";
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({ children }) {
       >
         <ParticleBackground />
         <div className="relative z-10">{children}</div>
+        
       </body>
     </html>
   );
