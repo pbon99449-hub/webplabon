@@ -54,6 +54,27 @@ app.use(
   })
 );
 
+// Root route - welcome message
+app.get('/', (req, res) => {
+  res.status(200).json({
+    ok: true,
+    service: 'wearnest-backend',
+    message: 'WearNest Backend is running!',
+    version: '1.0.0',
+    environment: process.env.NODE_ENV || 'development',
+    endpoints: {
+      health: '/api/health',
+      services: '/api/health/services',
+      products: '/api/products',
+      orders: '/api/orders',
+      auth: '/api/auth',
+      cart: '/api/cart',
+      wishlist: '/api/wishlist',
+      admin: '/api/admin',
+    }
+  });
+});
+
 // Health
 app.get('/api/health', (req, res) => {
   res.status(200).json({ ok: true, service: 'wearnest-backend' });
