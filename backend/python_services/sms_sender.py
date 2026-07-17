@@ -105,7 +105,7 @@ def send_via_bd_gateway(to, message):
     providers = [
         {
             'name': 'SMS.net.bd',
-            'url': 'https://sms.net.bd/api/send-sms',
+            'url': 'https://sms.net.bd/v1/send-sms',
             'params': {
                 'api_key': bd_api_key,
                 'msg': message,
