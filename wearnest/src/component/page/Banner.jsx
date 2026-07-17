@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import banner from '../../assets/wearnest-banner.png'
 import newArrivalTshirt from '../../assets/new-arrival-tshirt.jpg'
 import banner1 from '../../assets/banner1.jpg'
@@ -65,10 +65,10 @@ const products = [
 ];
 
 const categoryLinks = [
-  { label: 'SHOP NOW', href: 'https://fabrilife.com/shop' },
-  { label: 'MEN', href: 'https://fabrilife.com/shop?refinementList%5Bcats%5D%5B0%5D=Mens' },
-  { label: 'WOMEN', href: 'https://fabrilife.com/shop?refinementList%5Bcats%5D%5B0%5D=Womens' },
-  { label: 'KIDS', href: 'https://fabrilife.com/shop?refinementList%5Bcats%5D%5B0%5D=Kids' },
+  { label: 'SHOP NOW', to: '/allitem' },
+  { label: 'MEN', to: '/allitem?category=men' },
+  { label: 'WOMEN', to: '/allitem?category=women' },
+  { label: 'KIDS', to: '/allitem?category=kids' },
 ]
 
 const newArrivalItems = Array.from({ length: 30 }, (_, index) => index + 1)
@@ -87,13 +87,13 @@ const Banner = () => {
 
       <nav className="mt-1 grid grid-cols-2 bg-[#eeeeee] text-[#222] shadow-sm sm:grid-cols-4">
         {categoryLinks.map((link) => (
-          <a
+          <Link
             key={link.label}
-            href={link.href}
+            to={link.to}
             className="flex min-h-14 items-center justify-center border-white px-4 text-sm font-semibold tracking-wide transition-colors hover:bg-[#e2e2e2] sm:min-h-16 sm:text-base [&:not(:last-child)]:border-r"
           >
             {link.label}
-          </a>
+          </Link>
         ))}
       </nav>
 
@@ -1118,7 +1118,6 @@ const Banner = () => {
     </div>
   </div>
 </section>
-
 
 
 

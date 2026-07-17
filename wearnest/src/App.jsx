@@ -8,6 +8,12 @@ import PrivacyPolicy from './component/page/PrivacyPolicy'
 import Return from './component/page/return'
 import FaqDetail from './component/page/faqdetail'
 import AllItem from './component/page/allitem'
+import Cart from './component/page/cart'
+import Wishlist from './component/page/wishlist'
+import Profile from './component/page/profile'
+import ChackoutPage from './component/page/chackoutpage'
+import CheckoutProduct from './component/page/chackout'
+
 
 const App = () => {
   return (
@@ -22,6 +28,13 @@ const App = () => {
           <Route path="faqdetail" element={<FaqDetail />} />
           <Route path="contact" element={<Contact />} />
           <Route path="allitem" element={<AllItem />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="wishlist" element={<Wishlist />} />
+          <Route path="profile" element={<Profile />} />
+
+          <Route path="chackout" element={<ChackoutPage />} />
+          <Route path="chackout/:productSlug" element={<CheckoutProduct />} />
+
         </Route>
       </Routes>
     </BrowserRouter>
